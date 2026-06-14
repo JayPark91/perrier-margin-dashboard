@@ -19,12 +19,16 @@ import { Waterfall } from "@/components/Waterfall";
 import { Trend } from "@/components/Trend";
 import { BrandCompare } from "@/components/BrandCompare";
 import { FxBanner } from "@/components/FxBanner";
+import { PeriodView } from "@/components/PeriodView";
+
+type Tab = "margin" | "period";
 
 // 레이아웃 기본값 (디자인 시안 Tweaks 의 '경영진' 배치 고정;
 // '분석가'·'경보우선' variant CSS 는 globals.css 에 보존되어 추후 토글 추가 가능)
 const LAYOUT = "경영진";
 
 export default function Dashboard() {
+  const [tab, setTab] = useState<Tab>("margin");
   const [scn, setScn] = useState<Scenario>({ ...BASE });
   const [selected, setSelected] = useState("12574515"); // LIME 25cl CAN (위험)
 
@@ -87,6 +91,29 @@ export default function Dashboard() {
           </div>
         </header>
 
+        <nav className="tabs" role="tablist">
+          <button
+            role="tab"
+            className={"tab" + (tab === "margin" ? " on" : "")}
+            onClick={() => setTab("margin")}
+          >
+            마진 현황
+            <span className="tab-sub">모델 기준 · 시나리오</span>
+          </button>
+          <button
+            role="tab"
+            className={"tab" + (tab === "period" ? " on" : "")}
+            onClick={() => setTab("period")}
+          >
+            기간별 마진
+            <span className="tab-sub">실판매 업로드 · 월/분기/연도</span>
+          </button>
+        </nav>
+
+        {tab === "period" ? (
+          <PeriodView />
+        ) : (
+          <>
         <KpiStrip tot={tot} base={base} alerts={alertCount} />
 
         <AlertBand rows={rows} selected={selected} onSelect={setSelected} />
@@ -118,6 +145,8 @@ export default function Dashboard() {
             관세 0%(한·EU FTA)
           </span>
         </footer>
+          </>
+        )}
       </div>
     </div>
   );
