@@ -1,11 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import {
   BASE,
   computeAll,
   totals,
   monthly,
+  brandTotals,
+  TOPBAR_LOGO,
   type Scenario,
 } from "@/lib/model";
 import { KpiStrip } from "@/components/KpiStrip";
@@ -14,6 +17,7 @@ import { Ranking } from "@/components/Ranking";
 import { ScenarioPanel } from "@/components/ScenarioPanel";
 import { Waterfall } from "@/components/Waterfall";
 import { Trend } from "@/components/Trend";
+import { BrandCompare } from "@/components/BrandCompare";
 
 // 레이아웃 기본값 (디자인 시안 Tweaks 의 '경영진' 배치 고정;
 // '분석가'·'경보우선' variant CSS 는 globals.css 에 보존되어 추후 토글 추가 가능)
@@ -28,11 +32,13 @@ export default function Dashboard() {
   const baseRows = useMemo(() => computeAll(BASE), []);
   const base = useMemo(() => totals(baseRows), [baseRows]);
   const months = useMemo(() => monthly(scn), [scn]);
+  const brands = useMemo(() => brandTotals(rows), [rows]);
 
   const selRow = rows.find((r) => r.sku === selected) || rows[0];
   const alertCount = rows.filter((r) => r.status !== "ok").length;
   const dirty =
-    scn.fx !== BASE.fx ||
+    scn.eur !== BASE.eur ||
+    scn.usd !== BASE.usd ||
     scn.tariff !== BASE.tariff ||
     scn.freightMult !== BASE.freightMult;
 
@@ -41,7 +47,17 @@ export default function Dashboard() {
       <div className={"app layout-" + LAYOUT}>
         <header className="topbar">
           <div className="brand">
-            <span className="wordmark">PERRIER</span>
+            <span className="brand-plaque">
+              <Image
+                src={TOPBAR_LOGO}
+                className="brand-logo"
+                alt="Perrier"
+                width={92}
+                height={26}
+                priority
+              />
+            </span>
+            <span className="brand-divider" />
             <span className="brand-sub">공급가 · 마진 대시보드</span>
           </div>
           <div className="top-meta">
@@ -85,6 +101,7 @@ export default function Dashboard() {
               onReset={() => setScn({ ...BASE })}
             />
             <Waterfall row={selRow} />
+            <BrandCompare brands={brands} />
           </section>
         </main>
 

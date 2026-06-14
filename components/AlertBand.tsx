@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { fmtKRW, PRODUCT_IMG, STATUS, type Row } from "@/lib/model";
+import { fmtKRW, STATUS, type Row } from "@/lib/model";
 
 /* ---------- 마진 경보 밴드 (상단·제품 이미지 포함) ---------- */
 export function AlertBand({
@@ -27,7 +27,7 @@ export function AlertBand({
         {flagged.map((r) => {
           const st = STATUS[r.status];
           const sel = r.sku === selected;
-          const img = PRODUCT_IMG[r.sku];
+          const img = r.img;
           return (
             <div
               key={r.sku}
