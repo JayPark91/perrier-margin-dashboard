@@ -84,24 +84,24 @@ export interface MonthPoint {
   marginPct: number;
 }
 
-// 기준 시나리오
+// 기준 시나리오 — 실제 적용환율(한국은행 매매기준율 ×1.03·50원 올림, 2026-06-12 기준)
 export const BASE: Scenario = {
-  eur: 1450, // EUR → KRW (출고가)
-  usd: 1350, // USD → KRW (운임·물류)
+  eur: 1850, // EUR → KRW (출고가) · 고시 1,768.57 → 적용 1,850
+  usd: 1600, // USD → KRW (운임·물류) · 고시 1,527 → 적용 1,600
   tariff: 0,
   freightMult: 1,
   customsRate: 0.025,
   period: "2026-06",
 };
 
-// 월별 실적 환율 (EUR·USD 모두 상승 추세 → 마진 압박)
+// 월별 실적 환율 (EUR·USD 모두 상승 추세 → 마진 압박, 6월 = 실제 적용환율)
 export const EUR_HISTORY: Record<string, number> = {
-  "2026-01": 1390, "2026-02": 1405, "2026-03": 1420,
-  "2026-04": 1432, "2026-05": 1444, "2026-06": 1450,
+  "2026-01": 1773, "2026-02": 1793, "2026-03": 1812,
+  "2026-04": 1827, "2026-05": 1842, "2026-06": 1850,
 };
 export const USD_HISTORY: Record<string, number> = {
-  "2026-01": 1330, "2026-02": 1335, "2026-03": 1340,
-  "2026-04": 1345, "2026-05": 1348, "2026-06": 1350,
+  "2026-01": 1576, "2026-02": 1582, "2026-03": 1588,
+  "2026-04": 1594, "2026-05": 1598, "2026-06": 1600,
 };
 export const MONTHS = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"];
 export const MONTH_LABEL: Record<string, string> = {
@@ -123,18 +123,19 @@ function seasonKey(s: Sku): string {
 }
 
 // SKU 마스터 (products 탭 실측 + 모델 공급가/운임/판매량)
+// supply = 실제 적용환율(EUR1850/USD1600) 기준으로 재앵커 — SKU별 마진% 유지(전체 13.1%·경보 4종 동일)
 export const SKUS: Sku[] = [
-  { sku: "11652556", name: "20cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 24, eur: 0.4203, freightUsd: 0.0519, supply: 842,  volJun: 25000 },
-  { sku: "12620194", name: "33cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 24, eur: 0.46,   freightUsd: 0.0630, supply: 944,  volJun: 20500 },
-  { sku: "12620243", name: "75cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 12, eur: 0.80,   freightUsd: 0.1111, supply: 1678, volJun: 10300 },
-  { sku: "12574515", name: "LIME 25cl CAN",    brand: "maison", cat: "CAN",   flavor: "Lime",      hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 560,  volJun: 13600 },
-  { sku: "12574518", name: "LEMON 25cl CAN",   brand: "maison", cat: "CAN",   flavor: "Lemon",     hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 576,  volJun: 13600 },
-  { sku: "12574489", name: "GRAPEFRUIT 25cl CAN", brand: "maison", cat: "CAN", flavor: "Grapefruit", hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 632, volJun: 12400 },
-  { sku: "12574517", name: "LIME 50cl PET",    brand: "maison", cat: "PET",   flavor: "Lime",      hs: "2202.1", upb: 24, eur: 0.4226, freightUsd: 0.0444, supply: 784,  volJun: 14800 },
-  { sku: "12574516", name: "LEMON 50cl PET",   brand: "maison", cat: "PET",   flavor: "Lemon",     hs: "2202.1", upb: 24, eur: 0.4226, freightUsd: 0.0444, supply: 730,  volJun: 14800 },
-  { sku: "12620971", name: "LIME & GINGER 33cl OWG GLASS", brand: "maison", cat: "GLASS", flavor: "Lime & Ginger", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0630, supply: 926, volJun: 11300 },
-  { sku: "12574528", name: "LEMONJITO 25cl CAN", brand: "maison", cat: "CAN", flavor: "Lemonjito", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0311, supply: 810, volJun: 9200 },
-  { sku: "12605790", name: "PINA FIZZ 25cl CAN", brand: "maison", cat: "CAN", flavor: "Pina Fizz", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0311, supply: 855, volJun: 10300 },
+  { sku: "11652556", name: "20cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 24, eur: 0.4203, freightUsd: 0.0519, supply: 1066, volJun: 25000 },
+  { sku: "12620194", name: "33cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 24, eur: 0.46,   freightUsd: 0.0630, supply: 1195, volJun: 20500 },
+  { sku: "12620243", name: "75cl OWG GLASS",   brand: "source", cat: "GLASS", flavor: "Plain",     hs: "2201.1", upb: 12, eur: 0.80,   freightUsd: 0.1111, supply: 2123, volJun: 10300 },
+  { sku: "12574515", name: "LIME 25cl CAN",    brand: "maison", cat: "CAN",   flavor: "Lime",      hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 710,  volJun: 13600 },
+  { sku: "12574518", name: "LEMON 25cl CAN",   brand: "maison", cat: "CAN",   flavor: "Lemon",     hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 731,  volJun: 13600 },
+  { sku: "12574489", name: "GRAPEFRUIT 25cl CAN", brand: "maison", cat: "CAN", flavor: "Grapefruit", hs: "2202.1", upb: 30, eur: 0.3383, freightUsd: 0.0311, supply: 802, volJun: 12400 },
+  { sku: "12574517", name: "LIME 50cl PET",    brand: "maison", cat: "PET",   flavor: "Lime",      hs: "2202.1", upb: 24, eur: 0.4226, freightUsd: 0.0444, supply: 994,  volJun: 14800 },
+  { sku: "12574516", name: "LEMON 50cl PET",   brand: "maison", cat: "PET",   flavor: "Lemon",     hs: "2202.1", upb: 24, eur: 0.4226, freightUsd: 0.0444, supply: 925,  volJun: 14800 },
+  { sku: "12620971", name: "LIME & GINGER 33cl OWG GLASS", brand: "maison", cat: "GLASS", flavor: "Lime & Ginger", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0630, supply: 1172, volJun: 11300 },
+  { sku: "12574528", name: "LEMONJITO 25cl CAN", brand: "maison", cat: "CAN", flavor: "Lemonjito", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0311, supply: 1029, volJun: 9200 },
+  { sku: "12605790", name: "PINA FIZZ 25cl CAN", brand: "maison", cat: "CAN", flavor: "Pina Fizz", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0311, supply: 1086, volJun: 10300 },
 ];
 
 // 제품 이미지 (업로드 본품 컷, public/products/) — 11종 전체
@@ -155,7 +156,7 @@ export const IMG: Record<string, string> = {
 // 브랜드 로고 (public/brand/)
 export const BRAND_LOGO: Record<Brand, string> = {
   source: "/brand/logo-source.png",
-  maison: "/brand/logo-perrier.png",
+  maison: "/brand/logo-maison.png",
 };
 export const TOPBAR_LOGO = "/brand/logo-perrier.png";
 

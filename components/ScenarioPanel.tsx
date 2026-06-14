@@ -71,24 +71,24 @@ export function ScenarioPanel({
       <Slider
         label="EUR → KRW 환율"
         value={scn.eur}
-        min={1300}
-        max={1600}
+        min={1600}
+        max={2100}
         step={5}
         fmt={(v) => "₩" + fmtNum(v)}
         onChange={(v) => setScn({ ...scn, eur: v })}
         accent
-        sub="출고가(€0.34–0.80/병)에 적용 · 6월 실적 ₩1,450"
+        sub="출고가(€0.34–0.80/병)에 적용 · 실제 적용환율 ₩1,850"
       />
       <Slider
         label="USD → KRW 환율"
         value={scn.usd}
-        min={1200}
-        max={1500}
+        min={1400}
+        max={1800}
         step={5}
         fmt={(v) => "₩" + fmtNum(v)}
         onChange={(v) => setScn({ ...scn, usd: v })}
         accent
-        sub="운임·물류비(USD 청구)에 적용 · 6월 실적 ₩1,350"
+        sub="운임·물류비(USD 청구)에 적용 · 실제 적용환율 ₩1,600"
       />
       <Slider
         label="관세율"

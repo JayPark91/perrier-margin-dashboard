@@ -110,11 +110,12 @@ export default function Dashboard() {
 
         <footer className="foot">
           <span>
-            출처 · Google Sheet「페리에 공급가·마진 대시보드 데이터」 products 탭 실측 +
-            집계 정합(₩130,244,500 · 13.1%)
+            출처 · Google Sheet products 탭 실측 + 모델 — 공급가는 실제 적용환율
+            (EUR ₩1,850 / USD ₩1,600) 기준 재산정, 실현 마진율 13.1%
           </span>
           <span>
-            운임·통관 단가는 모델 가정 — 슬라이더로 조정 · 관세 0%(한·EU FTA)
+            환율 = 한국은행 매매기준율 ×1.03·50원 올림 · 운임·통관 단가는 모델 가정 ·
+            관세 0%(한·EU FTA)
           </span>
         </footer>
       </div>
