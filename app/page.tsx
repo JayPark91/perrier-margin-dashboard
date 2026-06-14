@@ -1,0 +1,103 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import {
+  BASE,
+  computeAll,
+  totals,
+  monthly,
+  type Scenario,
+} from "@/lib/model";
+import { KpiStrip } from "@/components/KpiStrip";
+import { AlertBand } from "@/components/AlertBand";
+import { Ranking } from "@/components/Ranking";
+import { ScenarioPanel } from "@/components/ScenarioPanel";
+import { Waterfall } from "@/components/Waterfall";
+import { Trend } from "@/components/Trend";
+
+// 레이아웃 기본값 (디자인 시안 Tweaks 의 '경영진' 배치 고정;
+// '분석가'·'경보우선' variant CSS 는 globals.css 에 보존되어 추후 토글 추가 가능)
+const LAYOUT = "경영진";
+
+export default function Dashboard() {
+  const [scn, setScn] = useState<Scenario>({ ...BASE });
+  const [selected, setSelected] = useState("12574515"); // LIME 25cl CAN (위험)
+
+  const rows = useMemo(() => computeAll(scn), [scn]);
+  const tot = useMemo(() => totals(rows), [rows]);
+  const baseRows = useMemo(() => computeAll(BASE), []);
+  const base = useMemo(() => totals(baseRows), [baseRows]);
+  const months = useMemo(() => monthly(scn), [scn]);
+
+  const selRow = rows.find((r) => r.sku === selected) || rows[0];
+  const alertCount = rows.filter((r) => r.status !== "ok").length;
+  const dirty =
+    scn.fx !== BASE.fx ||
+    scn.tariff !== BASE.tariff ||
+    scn.freightMult !== BASE.freightMult;
+
+  return (
+    <div className="app-root">
+      <div className={"app layout-" + LAYOUT}>
+        <header className="topbar">
+          <div className="brand">
+            <span className="wordmark">PERRIER</span>
+            <span className="brand-sub">공급가 · 마진 대시보드</span>
+          </div>
+          <div className="top-meta">
+            <div className="chip">
+              <span className="chip-k">기준</span>
+              <span className="chip-v">2026년 6월</span>
+            </div>
+            <div className="chip">
+              <span className="chip-k">SKU</span>
+              <span className="chip-v">11종 · 3카테고리</span>
+            </div>
+            <div className="chip">
+              <span className="chip-k">실현 마진율</span>
+              <span className="chip-v" style={{ color: "var(--gold)" }}>
+                {tot.marginPct.toFixed(1)}%
+              </span>
+            </div>
+            {dirty && (
+              <div className="chip chip-live">
+                <span className="live-dot" />
+                시나리오 적용중
+              </div>
+            )}
+          </div>
+        </header>
+
+        <KpiStrip tot={tot} base={base} alerts={alertCount} />
+
+        <AlertBand rows={rows} selected={selected} onSelect={setSelected} />
+
+        <main className="grid">
+          <section className="col-a">
+            <Ranking rows={rows} selected={selected} onSelect={setSelected} />
+            <Trend data={months} />
+          </section>
+          <section className="col-b">
+            <ScenarioPanel
+              scn={scn}
+              setScn={setScn}
+              dirty={dirty}
+              onReset={() => setScn({ ...BASE })}
+            />
+            <Waterfall row={selRow} />
+          </section>
+        </main>
+
+        <footer className="foot">
+          <span>
+            출처 · Google Sheet「페리에 공급가·마진 대시보드 데이터」 products 탭 실측 +
+            집계 정합(₩130,244,500 · 13.1%)
+          </span>
+          <span>
+            운임·통관 단가는 모델 가정 — 슬라이더로 조정 · 관세 0%(한·EU FTA)
+          </span>
+        </footer>
+      </div>
+    </div>
+  );
+}
