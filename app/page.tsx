@@ -18,6 +18,7 @@ import { ScenarioPanel } from "@/components/ScenarioPanel";
 import { Waterfall } from "@/components/Waterfall";
 import { Trend } from "@/components/Trend";
 import { BrandCompare } from "@/components/BrandCompare";
+import { FxBanner } from "@/components/FxBanner";
 
 // 레이아웃 기본값 (디자인 시안 Tweaks 의 '경영진' 배치 고정;
 // '분석가'·'경보우선' variant CSS 는 globals.css 에 보존되어 추후 토글 추가 가능)
@@ -45,6 +46,8 @@ export default function Dashboard() {
   return (
     <div className="app-root">
       <div className={"app layout-" + LAYOUT}>
+        <FxBanner />
+
         <header className="topbar">
           <div className="brand">
             <span className="brand-plaque">
@@ -67,7 +70,7 @@ export default function Dashboard() {
             </div>
             <div className="chip">
               <span className="chip-k">SKU</span>
-              <span className="chip-v">11종 · 3카테고리</span>
+              <span className="chip-v">11종 · 소스/메종 2카테고리</span>
             </div>
             <div className="chip">
               <span className="chip-k">실현 마진율</span>

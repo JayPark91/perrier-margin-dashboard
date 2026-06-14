@@ -50,6 +50,23 @@ body::before{
 .app-root{position:relative;z-index:1;}
 .app{max-width:1500px;margin:0 auto;padding:22px 28px 16px;}
 
+/* ---------- FX banner (top, 한국은행 매매기준율) ---------- */
+.fxbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-bottom:14px;padding:10px 16px;border:1px solid var(--line);border-radius:10px;
+  background:linear-gradient(90deg, rgba(14,64,48,0.7), rgba(8,40,31,0.55));}
+.fxbar-lead{display:flex;align-items:center;gap:9px;}
+.fxbar-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(91,198,138,0.6);animation:pulse 2.2s infinite;}
+.fxbar-title{font-size:13px;color:var(--cream);font-weight:600;letter-spacing:0.01em;}
+.fxbar-date{font-size:11.5px;color:var(--cream-mute);font-family:var(--mono);}
+.fxbar-rates{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.fxleg{display:flex;align-items:baseline;gap:8px;}
+.fxleg-k{font-size:11px;color:var(--cream-mute);font-family:var(--mono);font-weight:600;letter-spacing:0.04em;}
+.fxleg-v{font-size:15px;color:var(--cream);font-weight:600;}
+.fxleg-app{font-size:11.5px;color:var(--gold);}
+.fxbar-note{font-size:10.5px;color:var(--cream-mute);}
+.fxbar-state{font-size:12px;color:var(--cream-mute);font-family:var(--mono);}
+.fxbar-err{color:var(--watch);}
+
 /* ---------- topbar ---------- */
 .topbar{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);}
 .brand{display:flex;align-items:center;gap:14px;}
@@ -108,8 +125,18 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 /* ---------- ranking ---------- */
 .rank-list{display:flex;flex-direction:column;gap:2px;}
-.rank-row{display:grid;grid-template-columns:24px minmax(130px,1.3fr) 1fr 52px 64px;align-items:center;gap:10px;
+.rank-row{display:grid;grid-template-columns:22px 34px minmax(120px,1.3fr) 1fr 50px 60px;align-items:center;gap:10px;
   background:transparent;border:none;border-radius:7px;padding:7px 8px;cursor:pointer;text-align:left;transition:background .14s;width:100%;}
+.rank-thumb{position:relative;width:34px;height:34px;border-radius:7px;overflow:hidden;background:radial-gradient(120% 90% at 50% 35%, rgba(241,236,221,0.12), rgba(4,32,26,0) 72%);flex-shrink:0;}
+.rank-thumb img{object-fit:contain;padding:2px;}
+/* search */
+.rank-search{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:7px 11px;border:1px solid var(--line-soft);border-radius:9px;background:rgba(4,32,26,0.4);}
+.rank-search-i{color:var(--cream-mute);flex-shrink:0;}
+.rank-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--cream);font-family:var(--sans);font-size:13px;}
+.rank-search input::placeholder{color:var(--cream-mute);}
+.rank-search-x{background:transparent;border:none;color:var(--cream-mute);font-size:17px;line-height:1;cursor:pointer;padding:0 2px;}
+.rank-search-x:hover{color:var(--cream);}
+.rank-empty{font-size:12.5px;color:var(--cream-mute);padding:14px 8px;text-align:center;}
 .rank-row:hover{background:rgba(203,167,91,0.07);}
 .rank-row.sel{background:rgba(203,167,91,0.13);box-shadow:inset 0 0 0 1px rgba(203,167,91,0.3);}
 .rank-i{font-family:var(--mono);font-size:12px;color:var(--cream-mute);}
@@ -179,8 +206,9 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .bc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .bc-card{border:1px solid var(--line-soft);border-radius:11px;overflow:hidden;background:rgba(8,40,31,0.55);display:flex;flex-direction:column;}
 .bc-card.lead{box-shadow:inset 0 0 0 1px rgba(203,167,91,0.35);}
-.bc-logo-wrap{position:relative;background:var(--cream);height:54px;display:flex;align-items:center;justify-content:center;padding:0 16px;}
-.bc-logo{height:30px;width:auto;max-width:90%;object-fit:contain;display:block;}
+.bc-logo-wrap{position:relative;background:var(--cream);height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 16px;}
+.bc-logo{height:28px;width:auto;max-width:88%;object-fit:contain;display:block;}
+.bc-eyebrow{font-family:var(--heading-font);font-size:10px;font-weight:700;letter-spacing:0.28em;color:var(--green-700);text-indent:0.28em;line-height:1;}
 .bc-body{padding:13px 15px 15px;}
 .bc-titles{display:flex;flex-direction:column;gap:2px;margin-bottom:9px;}
 .bc-ko{font-family:var(--heading-font);font-size:16px;font-weight:600;color:var(--cream);}
@@ -211,7 +239,54 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .layout-경보우선 .col-b .waterfall{order:2;}
 .layout-경보우선 .alerts{box-shadow:inset 0 0 0 1px rgba(229,96,77,0.25);}
 
+/* ---------- 반응형 ---------- */
+/* 태블릿: 메인 그리드 1열, KPI/경보/브랜드 2열 유지 */
 @media (max-width:1080px){
   .grid{grid-template-columns:1fr;}
   .kpi-strip{grid-template-columns:repeat(2,1fr);}
+  .ab-grid{grid-template-columns:repeat(2,1fr);}
+  /* col-b 레이아웃 variant 순서 초기화 (1열에선 불필요) */
+  .layout-분석가 .grid,.layout-경보우선 .grid{grid-template-columns:1fr;}
+}
+
+/* 모바일: 전부 1열, 폰트·여백 축소 */
+@media (max-width:680px){
+  .app{padding:14px 14px 12px;}
+  .fxbar{padding:9px 12px;gap:8px;}
+  .fxbar-rates{gap:12px;width:100%;}
+  .fxbar-note{display:none;}
+
+  .topbar{flex-direction:column;align-items:flex-start;gap:12px;}
+  .top-meta{justify-content:flex-start;}
+  .brand-plaque{padding:7px 13px;}
+  .brand-logo{height:22px;}
+
+  .kpi-strip{grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+  .kpi{padding:13px 14px;}
+  .kpi-v{font-size:21px;}
+  .kpi-v-lg{font-size:22px;}
+
+  .ab-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .ab-imgwrap,.layout-경보우선 .ab-imgwrap{height:128px;}
+  .ab-pct{font-size:15px;}
+
+  .panel{padding:14px 14px;}
+  .panel-h{flex-wrap:wrap;gap:4px;}
+  .panel-h-sub{text-align:left;}
+
+  /* 랭킹: 썸네일 유지, 매출열 숨겨 공간 확보 */
+  .rank-row{grid-template-columns:20px 30px 1fr 46px;gap:8px;}
+  .rank-bar-wrap{display:none;}
+  .rank-rev{display:none;}
+  .rank-cat{white-space:normal;}
+
+  .bc-grid{grid-template-columns:1fr;}
+  .wf-foot{grid-template-columns:repeat(2,1fr);}
+  .foot{flex-direction:column;gap:8px;}
+}
+
+/* 초소형 */
+@media (max-width:380px){
+  .kpi-strip{grid-template-columns:1fr;}
+  .ab-grid{grid-template-columns:1fr;}
 }

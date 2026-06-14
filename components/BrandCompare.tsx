@@ -32,6 +32,7 @@ export function BrandCompare({
           return (
             <div key={b} className={"bc-card" + (d.marginPct === top ? " lead" : "")}>
               <div className="bc-logo-wrap">
+                {b === "maison" && <span className="bc-eyebrow">MAISON</span>}
                 <Image
                   src={BRAND_LOGO[b]}
                   alt={d.en}

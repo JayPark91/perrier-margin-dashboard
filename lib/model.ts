@@ -137,14 +137,19 @@ export const SKUS: Sku[] = [
   { sku: "12605790", name: "PINA FIZZ 25cl CAN", brand: "maison", cat: "CAN", flavor: "Pina Fizz", hs: "2202.1", upb: 24, eur: 0.4841, freightUsd: 0.0311, supply: 855, volJun: 10300 },
 ];
 
-// 제품 이미지 (업로드 본품 컷, public/products/)
+// 제품 이미지 (업로드 본품 컷, public/products/) — 11종 전체
 export const IMG: Record<string, string> = {
+  "11652556": "/products/source-glass-200.png", // 20cl (실제 330ml 이미지 대체)
+  "12620194": "/products/source-glass-330.png", // 33cl
+  "12620243": "/products/source-glass-750.png", // 75cl
   "12574515": "/products/lime-can-250.png",
-  "12574517": "/products/lime-pet-500.png",
   "12574518": "/products/lemon-can-250.png",
-  "12574516": "/products/lemon-pet-500.png",
-  "12574528": "/products/lemonjito-can-250.png",
   "12574489": "/products/grapefruit-can-250.png",
+  "12574517": "/products/lime-pet-500.png",
+  "12574516": "/products/lemon-pet-500.png",
+  "12620971": "/products/limeginger-glass-330.png",
+  "12574528": "/products/lemonjito-can-250.png",
+  "12605790": "/products/pinafizz-can-250.png",
 };
 
 // 브랜드 로고 (public/brand/)
